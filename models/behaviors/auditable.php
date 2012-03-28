@@ -284,6 +284,11 @@ class AuditableBehavior extends ModelBehavior {
     $audit_data = array(
       $model->alias => $data[$model->alias]
     );
+    
+    // ignored properties
+    foreach( $this->settings[$model->alias]['json_object_ignore'] as $ignore ) {
+    	unset($audit_data[$model->alias][$ignore]);
+    }
 
     foreach( $this->settings[$model->alias]['habtm'] as $habtm_model ) {
       if( array_key_exists( $habtm_model, $model->hasAndBelongsToMany ) && isset( $data[$habtm_model] ) ) {
